@@ -1,0 +1,24 @@
+# create a new folder
+mkdir bash-scripting-assignment1
+cd bash-scripting-assignment1
+
+# create files and paste above code
+nano README.md
+nano script1_hello.sh
+nano script2_variables.sh
+nano script3_conditionals.sh
+nano script4_loops.sh
+nano script5_userinput.sh
+
+# make scripts executable
+chmod +x *.sh
+
+# initialize git repo
+git init
+git add .
+git commit -m "Peer-graded Assignment 1: Bash Scripting Basics"
+
+# push to GitHub (replace with your repo URL)
+git branch -M main
+git remote add origin https://github.com/YourUsername/bash-scripting-assignment1.git
+git push -u origin main
