@@ -1,0 +1,8 @@
+# Assignment 4 Part 1: Placeholder Example
+# Replace this with the actual code from the assignment steps
+
+def main():
+    print("Hello, Assignment 4 Part 1!")
+    
+if __name__ == "__main__":
+    main()
