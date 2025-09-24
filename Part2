@@ -1,0 +1,52 @@
+// Arduino Pins
+const int tempSensorPin = A0;       // Analog pin for temperature sensor
+const int moistureSensorPin = A1;   // Analog pin for soil moisture sensor
+const int ledPin = 13;              // Onboard LED for alerts
+const int pumpPin = 8;              // Digital pin for water pump relay
+
+// Thresholds
+const float tempThreshold = 35.0;   // Temperature threshold in Celsius
+const float moistureThreshold = 30; // Soil moisture threshold %
+
+void setup() {
+  Serial.begin(9600);       // Initialize serial communication
+  pinMode(ledPin, OUTPUT);  // LED as output
+  pinMode(pumpPin, OUTPUT); // Pump as output
+  digitalWrite(pumpPin, LOW); // Ensure pump is off initially
+  Serial.println("Automated Swadeshi Environment System Initialized");
+}
+
+void loop() {
+  // Read sensors
+  int tempReading = analogRead(tempSensorPin);
+  int moistureReading = analogRead(moistureSensorPin);
+
+  // Convert temperature reading to Celsius (LM35)
+  float temperature = (tempReading * 5.0 * 100.0) / 1024.0;
+
+  // Soil moisture percentage
+  float moisturePercent = (moistureReading / 1023.0) * 100;
+
+  // Print readings
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.print(" °C, Soil Moisture: ");
+  Serial.print(moisturePercent);
+  Serial.println("%");
+
+  // Alerts & automatic control
+  if (moisturePercent < moistureThreshold) {
+    digitalWrite(ledPin, HIGH);   // Turn on LED alert
+    digitalWrite(pumpPin, HIGH);  // Start watering
+    Serial.println("Alert: Soil too dry! Pump activated.");
+  } else {
+    digitalWrite(ledPin, LOW);    // Turn off LED
+    digitalWrite(pumpPin, LOW);   // Stop watering
+  }
+
+  if (temperature > tempThreshold) {
+    Serial.println("Warning: Temperature is high! Protect crops.");
+  }
+
+  delay(2000); // Wait 2 seconds before next reading
+}
