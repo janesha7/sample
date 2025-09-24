@@ -1,0 +1,39 @@
+// Arduino Pins
+const int tempSensorPin = A0;       // Analog pin for temperature sensor
+const int moistureSensorPin = A1;   // Analog pin for soil moisture sensor
+const int ledPin = 13;              // Onboard LED for alerts
+
+void setup() {
+  Serial.begin(9600);       // Initialize serial communication
+  pinMode(ledPin, OUTPUT);  // LED as output
+  Serial.println("Swadeshi Environment Monitor Initialized");
+}
+
+void loop() {
+  // Read sensors
+  int tempReading = analogRead(tempSensorPin);
+  int moistureReading = analogRead(moistureSensorPin);
+
+  // Convert temperature reading to Celsius (assuming LM35)
+  float temperature = (tempReading * 5.0 * 100.0) / 1024.0;
+
+  // Soil moisture percentage
+  float moisturePercent = (moistureReading / 1023.0) * 100;
+
+  // Print readings
+  Serial.print("Temperature: ");
+  Serial.print(temperature);
+  Serial.print(" °C, Soil Moisture: ");
+  Serial.print(moisturePercent);
+  Serial.println("%");
+
+  // Simple alert system
+  if (moisturePercent < 30) {
+    digitalWrite(ledPin, HIGH);  // Turn on LED if soil is dry
+    Serial.println("Alert: Soil too dry! Water the plants.");
+  } else {
+    digitalWrite(ledPin, LOW);   // Turn off LED
+  }
+
+  delay(2000); // Wait 2 seconds before next reading
+}
